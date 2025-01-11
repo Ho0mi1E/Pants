@@ -1,7 +1,7 @@
 package com.example.pants.utils
 
-import com.example.pants.domain.ColorResponse
-import com.example.pants.domain.ColorModel
+import com.example.pants.data.dto.ColorResponse
+import com.example.pants.domain.entites.ColorModel
 
 fun ColorResponse.toColorModel(): ColorModel {
     return ColorModel(
