@@ -5,6 +5,12 @@ import com.example.pants.domain.entites.ColorModel
 import com.example.pants.domain.repository.ColorRepository
 import com.example.pants.utils.generateRandomColor
 import com.example.pants.utils.toColorModel
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.coroutineScope
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.sync.Mutex
+import kotlinx.coroutines.sync.withLock
+import kotlinx.coroutines.withContext
 import java.util.Locale
 
 class ColorRepositoryImpl(
@@ -12,17 +18,32 @@ class ColorRepositoryImpl(
 ) : ColorRepository {
 
     override suspend fun getRandomColors(count: Int): Result<Set<ColorModel>> = runCatching {
-        val colorList = mutableListOf<ColorModel>()
+        val colorList = mutableSetOf<ColorModel>()
+        val mutex = Mutex()
 
-        while (colorList.size < count) {
-            val color = apiService.getColor(generateRandomColor()).toColorModel()
-            val doesntContainCommon = color.name.lowercase(Locale.getDefault()) !in COMMON_USE_NAMES
-            val isDistinct = color !in colorList
-            if (doesntContainCommon && isDistinct) {
-                colorList.add(color)
+        withContext(Dispatchers.IO) {
+            coroutineScope {
+                repeat(count) {
+                    launch {
+                        while (true) {
+                            val color = apiService.getColor(generateRandomColor()).toColorModel()
+
+                            val isCommonName = color.name.lowercase(Locale.getDefault()) in COMMON_USE_NAMES
+
+                            if (!isCommonName) {
+                                mutex.withLock {
+                                    if (color !in colorList) {
+                                        colorList.add(color)
+                                        return@launch
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
             }
         }
-        colorList.toSet()
+        colorList
     }
 
     private companion object {
