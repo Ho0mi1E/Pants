@@ -1,5 +1,6 @@
 package com.example.pants.presentation.compose.components
 
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -33,7 +34,7 @@ internal fun ColorDetails(modifier: Modifier, color: Color) {
 
 @Composable
 internal fun DataPointPresenter(title: String, data: String) {
-    Column(horizontalAlignment = Alignment.CenterHorizontally) {
+    Column(modifier = Modifier.clickable {  }, horizontalAlignment = Alignment.CenterHorizontally) {
         Text(
             text = title
         )
