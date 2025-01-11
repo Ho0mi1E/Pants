@@ -1,5 +1,6 @@
 package com.example.pants.presentation.compose.components
 
+
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.IntrinsicSize
@@ -31,11 +32,10 @@ internal fun PickerContent(
         Previews(
             modifier = Modifier.fillMaxWidth(),
             colors = colors,
-            selectedColor = selectedColor,
             animatedColor = animatedColor,
             animatedGradient = animatedGradient,
         )
-        HuePicker(hue = selectedColor.hue, animatedColor = animatedColor, onHueChange = onHueChange)
+        HuePicker(hue = selectedColor.hue, onHueChange = onHueChange)
     }
 }
 
@@ -56,3 +56,4 @@ fun PickerContentPreview() {
         colors = List(5) { model }
     )
 }
+

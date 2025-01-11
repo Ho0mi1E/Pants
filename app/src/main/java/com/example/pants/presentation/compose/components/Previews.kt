@@ -1,5 +1,6 @@
 package com.example.pants.presentation.compose.components
 
+
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.IntrinsicSize
@@ -19,7 +20,6 @@ import com.example.pants.domain.entites.ColorModel
 internal fun Previews(
     modifier: Modifier = Modifier,
     colors: List<ColorModel>,
-    selectedColor: Color,
     animatedColor: Color,
     animatedGradient: Brush,
 ) {
@@ -29,12 +29,10 @@ internal fun Previews(
             .padding(horizontal = 8.dp),
         horizontalArrangement = Arrangement.spacedBy(16.dp)
     ) {
-        Box() {
-            for (color in List(colors.size) { it }) {
-                ColorBoardPreview(modifier = Modifier.fillMaxHeight(), colors = colors)
-            }
+        Box(modifier = Modifier.fillMaxHeight().padding(vertical = 8.dp)) {
+            ColorBoardPreview( colors = colors)
         }
-        ColorPreview(color = selectedColor, animatedColor = animatedColor, animatedGradient = animatedGradient)
+        ColorPreview( animatedColor = animatedColor, animatedGradient = animatedGradient)
     }
 }
 
@@ -51,7 +49,6 @@ fun PreviewsPreview() {
 
     Previews(
         modifier = Modifier,
-        selectedColor = Color.Blue,
         colors = List(5) { model },
         animatedColor = Color.Yellow,
         animatedGradient = Brush.linearGradient(0f to Color.Yellow,  0.5f to Color.Green,  1f to Color.Blue),

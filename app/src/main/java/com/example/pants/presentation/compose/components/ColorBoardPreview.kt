@@ -4,7 +4,6 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxHeight
-import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Surface
@@ -20,16 +19,10 @@ import com.example.pants.domain.entites.ColorModel
 
 @Composable
 internal fun ColorBoardPreview(
-    modifier: Modifier = Modifier,
-    colors: List<ColorModel>,
+    colors: List<ColorModel>
 ) {
-    Box(
-        modifier = modifier.padding(vertical = 8.dp)
-    ) {
-        colors.forEach {
-            DisplayColorFromBoard(colors)
-        }
-    }
+    DisplayColorFromBoard(colors)
+
 }
 
 @Composable
@@ -48,20 +41,21 @@ private fun DisplayColorFromBoard(colors: List<ColorModel>) {
 private fun BorderedBox(color: ColorModel) {
     fun darkenColor(color: Color) =
         Color(ColorUtils.blendARGB(color.toArgb(), Color.Black.toArgb(), 0.5f))
+
     fun ColorModel.asComposeColor() =
         guessHue?.let { hue -> Color.hsv(hue, 1f, 1f) } ?: Color.Gray
 
     val infillColor = color.asComposeColor()
-    val outlineColor = darkenColor(color.asComposeColor())
+    val outlineColor = darkenColor(infillColor)
     val colors = listOf(outlineColor, infillColor)
     Box(contentAlignment = Alignment.Center) {
         colors.forEach { colorToDraw ->
-            val size = when(colorToDraw) {
+            val size = when (colorToDraw) {
                 outlineColor -> 38.dp
                 infillColor -> 32.dp
                 else -> 32.dp
             }
-            Surface (
+            Surface(
                 modifier = Modifier
                     .size(size)
                     .clip(RoundedCornerShape(12.dp)),

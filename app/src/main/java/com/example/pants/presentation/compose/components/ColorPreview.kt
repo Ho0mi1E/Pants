@@ -1,5 +1,6 @@
 package com.example.pants.presentation.compose.components
 
+
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -25,7 +26,6 @@ import androidx.compose.ui.unit.dp
 @Composable
 internal fun ColorPreview(
     modifier: Modifier = Modifier,
-    color: Color,
     animatedColor: Color,
     animatedGradient: Brush,
 ) {
@@ -47,7 +47,7 @@ private fun ColorBox(animatedGradient: Brush) {
             .fillMaxWidth()
             .clip(RoundedCornerShape(16.dp))
             .background(animatedGradient)
-            .onSizeChanged { width = it.width }
+            .onSizeChanged { if (width != it.width) width = it.width }
             .then(
                 with(LocalDensity.current) {
                     Modifier.height(width.toDp())
@@ -60,7 +60,6 @@ private fun ColorBox(animatedGradient: Brush) {
 @Composable
 fun ColorPreviewPreview(){
     ColorPreview(
-        color = Color.Yellow,
         animatedColor = Color.Yellow,
         animatedGradient = Brush.linearGradient(0f to Color.Yellow,  0.5f to Color.Green,  1f to Color.Blue),
     )
