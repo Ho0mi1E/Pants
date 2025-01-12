@@ -16,6 +16,7 @@ import com.example.pants.utils.extension.swap
 
 class ColorListAdapter(
     private val onItemClicked: (ColorModel) -> Unit,
+    private val onSortUpdated: (List<ColorModel>) -> Unit
 ) : ListAdapter<ColorModel, ColorListAdapter.ColorViewHolder>(DIFF_UTIL) {
 
     private var originalList: List<ColorModel> = emptyList()
@@ -48,6 +49,7 @@ class ColorListAdapter(
         val newPosition = if (position > 0) position - 1 else currentList.size - 1
         itemList.swap(position, newPosition)
         submitList(itemList)
+        onSortUpdated(itemList)
     }
 
     class ColorViewHolder(private val binding: ItemColorBinding) :

@@ -40,9 +40,11 @@ class GameFragment : Fragment() {
 
         with(viewBinding) {
             textTitle.setColoredText(getString(R.string.sort_the_pants))
-            _adapter = ColorListAdapter { colorModel ->
+            _adapter = ColorListAdapter({ colorModel ->
                 navigateToPicker(colorModel.name)
-            }
+            }, { listOfColorModel ->
+                viewModel.updateColorBoard(listOfColorModel)
+            })
 
             colorsList.adapter = adapter
 
@@ -74,6 +76,7 @@ class GameFragment : Fragment() {
                 colors == null -> {
                     showToast(getString(R.string.success))
                 }
+
                 colors.isNotEmpty() -> {
                     adapter.apply {
                         setOriginalList()
