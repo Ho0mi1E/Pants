@@ -57,6 +57,10 @@ class SharedGameViewModel(
         }
     }
 
+    fun updateColorBoard(updatedList : List<ColorModel>){
+        _colorBoard.value = updatedList
+    }
+
     fun updateColorSettings(hue: Float) {
         _selectedColor.value = Color.hsv(hue, 1f, 1f)
     }
