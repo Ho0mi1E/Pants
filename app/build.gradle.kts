@@ -16,16 +16,29 @@ android {
         versionCode = 1
         versionName = "1.0"
 
-        testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+        testInstrumentationRunnerArguments["androidx.benchmark.dontRestrictLibraries"] = "true"
+        testInstrumentationRunnerArguments["androidx.benchmark.traceEnabled"] = "false"
+
+
+        // testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+        testInstrumentationRunnerArguments["androidx.benchmark.suppressErrors"] =
+            "EMULATOR,LOW-BATTERY"
+        testInstrumentationRunner = "androidx.benchmark.junit4.AndroidBenchmarkRunner"
+
         vectorDrawables {
             useSupportLibrary = true
         }
+
     }
 
     buildTypes {
         release {
             isMinifyEnabled = true
-            proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
+            isDebuggable = true
+            proguardFiles(
+                getDefaultProguardFile("proguard-android-optimize.txt"),
+                "proguard-rules.pro"
+            )
         }
     }
     compileOptions {
@@ -44,6 +57,7 @@ android {
             excludes += "/META-INF/{AL2.0,LGPL2.1}"
         }
     }
+
 }
 
 dependencies {
@@ -68,6 +82,16 @@ dependencies {
     implementation(libs.kotlinx.coroutine)
     implementation(libs.kotlinx.collection)
     implementation(libs.koin.android)
+    implementation(libs.androidx.monitor)
+    testImplementation(libs.junit)
+    androidTestImplementation(libs.androidx.junit)
+
+    testImplementation(libs.kotlinx.coroutines.test.v164)
+    implementation(libs.androidx.benchmark.junit4.v124)
+
+    androidTestImplementation(libs.androidx.espresso.core)
 
     debugImplementation(libs.ui.tooling.preview)
 }
+
+
